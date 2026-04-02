@@ -33,7 +33,7 @@ if not st.session_state['auth']:
 else:
     st.title(f"🚀 San-AI: Welcome Boss {OFFICIAL_OWNER}")
     
-    # Defining Tabs Clearly to avoid NameError
+    # Defining Tabs
     tab1, tab2 = st.tabs(["🧠 Smart Brain", "🎨 Art Studio"])
 
     with tab1:
@@ -41,27 +41,28 @@ else:
         query = st.text_input("Ask San-AI anything:", key="q1")
         if query:
             st.info("🔍 Searching...")
-            res = requests.get(f"https://duckduckgo.com{query}&format=json").json()
-            answer = res.get("AbstractText", "I'm still learning this topic!")
-            st.success(answer)
-            # Text to Speech
-            audio_url = f"https://google.com{answer[:200].replace(' ', '%20')}&tl=en&client=tw-ob"
-            st.audio(audio_url)
+            try:
+                res = requests.get(f"https://duckduckgo.com{query}&format=json").json()
+                answer = res.get("AbstractText", "I'm still learning this topic!")
+                st.success(answer)
+                # Text to Speech
+                audio_url = f"https://google.com{answer[:200].replace(' ', '%20')}&tl=en&client=tw-ob"
+                st.audio(audio_url)
+            except:
+                st.error("Connection error.")
 
-        with tab2:
+    with tab2:
         st.subheader("🎨 Imagine & Create")
         img_prompt = st.text_input("Describe your art (in English):", key="p1")
         if st.button("Generate Magic Image"):
             if img_prompt:
                 st.info("🎨 San-AI is painting... please wait.")
-                # بەکارهێنانی مۆدێلی Flux کە زۆر بەهێزە بۆ نووسین و ناو
+                # Using Flux model for high quality and text accuracy
                 clean_prompt = img_prompt.replace(' ', '%20')
-                # زیادکردنی &model=flux بۆ ئەوەی وێنەی نایاب دروست بکات
-                image_url = f"https://pollinations.ai{clean_prompt}?width=1024&height=1024&model=flux&nologo=true&seed=123"
+                image_url = f"https://pollinations.ai{clean_prompt}?width=1024&height=1024&model=flux&nologo=true&seed=42"
                 st.image(image_url, caption=f"Created for {OFFICIAL_OWNER}", use_container_width=True)
             else:
-                st.warning("Please type a description!")
-
+                st.warning("Please type a description first!")
 
     # Sidebar
     if st.sidebar.button("Log Out"):
