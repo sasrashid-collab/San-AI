@@ -86,13 +86,23 @@ else:
                 except:
                     st.error("Protocol Error: Connection Failed.")
 
-    # --- Tab 2: Neural Art (Image Gen) ---
-    with tabs[1]:
-        st.subheader("Imagine Anything")
-        prompt = st.text_input("Describe the scene (Be specific):")
-        if st.button("Generate Neural Image"):
-            img_url = f"https://pollinations.ai{prompt.replace(' ', '%20')}?width=1280&height=720&model=flux&nologo=true"
-            st.image(img_url, caption=f"Neural Vision for {OFFICIAL_OWNER}")
+    # --- TAB 2: AI Art Studio (Improved) ---
+    with tab2:
+        st.subheader("🎨 Imagine & Create")
+        img_prompt = st.text_input("Describe your art (in English):", placeholder="e.g. A golden trophy for San")
+        
+        if st.button("Generate Magic Image"):
+            if img_prompt:
+                st.info("🎨 San-AI is painting... please wait.")
+                # بەکارهێنانی لینکی ڕاستەوخۆ و خێرا بۆ دروستکردنی وێنە
+                clean_prompt = img_prompt.replace(' ', '%20')
+                image_url = f"https://pollinations.ai{clean_prompt}?width=1024&height=1024&seed=42&model=flux"
+                
+                # نیشاندانی وێنەکە بە شێوەیەکی پرۆفیشناڵ
+                st.image(image_url, caption=f"Created for San Shadman", use_container_width=True)
+            else:
+                st.warning("Please type a description first!")
+
 
     # --- Tab 3: Evolution (Self-Coding) ---
     with tabs[2]:
