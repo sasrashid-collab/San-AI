@@ -1,0 +1,15 @@
+{
+  "name": "San-AI",
+  "short_name": "San-AI",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050a14",
+  "theme_color": "#00d4ff",
+  "icons": [
+    {
+      "src": "https://icons8.com",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
