@@ -48,18 +48,20 @@ else:
             audio_url = f"https://google.com{answer[:200].replace(' ', '%20')}&tl=en&client=tw-ob"
             st.audio(audio_url)
 
-    with tab2:
-        st.subheader("Imagine & Create")
+        with tab2:
+        st.subheader("🎨 Imagine & Create")
         img_prompt = st.text_input("Describe your art (in English):", key="p1")
         if st.button("Generate Magic Image"):
             if img_prompt:
                 st.info("🎨 San-AI is painting... please wait.")
-                # Using a very stable image API
+                # بەکارهێنانی مۆدێلی Flux کە زۆر بەهێزە بۆ نووسین و ناو
                 clean_prompt = img_prompt.replace(' ', '%20')
-                image_url = f"https://pollinations.ai{clean_prompt}?width=1024&height=1024&seed=42&nologo=true"
+                # زیادکردنی &model=flux بۆ ئەوەی وێنەی نایاب دروست بکات
+                image_url = f"https://pollinations.ai{clean_prompt}?width=1024&height=1024&model=flux&nologo=true&seed=123"
                 st.image(image_url, caption=f"Created for {OFFICIAL_OWNER}", use_container_width=True)
             else:
                 st.warning("Please type a description!")
+
 
     # Sidebar
     if st.sidebar.button("Log Out"):
