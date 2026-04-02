@@ -27,31 +27,30 @@ else:
     tab1, tab2 = st.tabs(["🧠 Brain", "🎨 Art Studio"])
 
     with tab1:
-        query = st.text_input("Ask anything:", key="q_brain")
+        query = st.text_input("Ask anything (English):", key="q_brain")
         if query:
-            st.info("Searching...")
-            # ڕاستکردنەوەی لینکی گەڕان
-            search_url = f"https://duckduckgo.com{query.replace(' ', '+')}&format=json"
+            st.info("🔍 Searching Knowledge Base...")
+            # بەکارهێنانی ویکیپیدیا بۆ گەڕانی جێگیر و بێ کێشە
+            wiki_url = f"https://wikipedia.org{query.replace(' ', '_')}"
             try:
-                res = requests.get(search_url).json()
-                ans = res.get("AbstractText", "I found some info, but try asking about a specific thing like 'The Moon' or 'Robots'!")
-                if not ans:
-                    ans = "I'm still learning about this topic. Ask me something else!"
-                st.success(ans)
-                # خوێندنەوەی وەڵامەکە بە دەنگ
-                audio_url = f"https://google.com{ans[:200].replace(' ', '%20')}&tl=en&client=tw-ob"
-                st.audio(audio_url)
+                res = requests.get(wiki_url).json()
+                if "extract" in res:
+                    ans = res["extract"]
+                    st.success(ans)
+                    # Text to Speech
+                    audio_url = f"https://google.com{ans[:200].replace(' ', '%20')}&tl=en&client=tw-ob"
+                    st.audio(audio_url)
+                else:
+                    st.warning("🤔 I couldn't find an exact answer. Try asking about a planet, animal, or city!")
             except:
-                st.error("Connection error. Check your internet!")
+                st.error("📡 System Error: Please try again in a moment.")
 
     with tab2:
         prompt = st.text_input("Describe your art (English):", key="p_art")
         if st.button("Create Image"):
             if prompt:
-                st.info("San-AI is painting...")
-                # بەکارهێنانی سێرڤەرێکی جێگیر بۆ وێنە
-                clean_p = prompt.replace(' ', '%20')
-                img_url = f"https://pollinations.ai{clean_p}?width=800&height=800&nologo=true&seed=55"
+                st.info("🎨 San-AI is painting...")
+                img_url = f"https://pollinations.ai{prompt.replace(' ', '%20')}?width=800&height=800&nologo=true&seed=77"
                 st.image(img_url, caption=f"Result for {OFFICIAL_OWNER}")
             else:
                 st.warning("Please type something!")
