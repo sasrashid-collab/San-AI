@@ -1,15 +1,16 @@
 {
-  "name": "San-AI",
+  "name": "San-AI Ultimate",
   "short_name": "San-AI",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#050a14",
-  "theme_color": "#00d4ff",
+  "theme_color": "#00e5ff",
   "icons": [
     {
-      "src": "https://icons8.com",
+      "src": "https://flaticon.com",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
