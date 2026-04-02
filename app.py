@@ -9,6 +9,15 @@ VERSION = "6.0 Hyper-V"
 ST_YEAR = 2026
 
 st.set_page_config(page_title=f"San-AI {VERSION}", page_icon="🌌", layout="wide")
+# ئەم کۆدە بە وێبگەڕەکە دەڵێت کە ئەمە ئەپێکی ڕاستەقینەیە
+st.markdown(f"""
+    <link rel="manifest" href="manifest.json">
+    <script>
+        if ('serviceWorker' in navigator) {{
+            navigator.serviceWorker.register('/sw.js');
+        }}
+    </script>
+    """, unsafe_allow_html=True)
 
 # --- Advanced Cyber UI (Inspired by DeepSeek/Qwen style) ---
 st.markdown(f"""
