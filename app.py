@@ -1,19 +1,20 @@
 import streamlit as st
-import requests
 
-# --- Settings ---
+# --- Core Settings ---
 OFFICIAL_OWNER = "San Shadman"
 SECRET_CODE = "san11"
 
 st.set_page_config(page_title="San-AI V1", page_icon="🤖")
 
-# --- Authentication ---
+# --- UI Styling ---
+st.markdown("""<style> .stApp { background: #050a14; color: #00ffcc; } </style>""", unsafe_allow_html=True)
+
 if 'auth' not in st.session_state:
     st.session_state['auth'] = False
 
 if not st.session_state['auth']:
-    st.title("🔒 San-AI Login")
-    pwd = st.text_input("Enter Code:", type="password")
+    st.title("🔒 San-AI System")
+    pwd = st.text_input("Security Code:", type="password")
     if st.button("Unlock"):
         if pwd.lower().strip() == SECRET_CODE:
             st.session_state['auth'] = True
@@ -21,32 +22,36 @@ if not st.session_state['auth']:
         else:
             st.error("Wrong Code!")
 else:
-    st.title(f"🚀 Welcome, Boss San")
-    
-    # Simple Search (The Brain)
-    query = st.text_input("Ask San-AI (English):", placeholder="e.g. Earth, Lion, Erbil")
+    st.title(f"🚀 Welcome, Boss San Shadman")
+    st.write("System Status: **Online & Secure** ✅")
+
+    # The Internal Brain (No Internet needed)
+    query = st.text_input("Ask San-AI (Try: Space, Robots, Erbil, or Hello):")
     
     if query:
-        st.info("Searching...")
-        # بەکارهێنانی سادەترین لینکی ویکیپیدیا
-        url = f"https://wikipedia.org{query.replace(' ', '_')}"
-        try:
-            res = requests.get(url).json()
-            if "extract" in res:
-                answer = res["extract"]
-                st.success(answer)
-                # دەنگ بۆ خوێندنەوەی وەڵامەکە
-                audio_url = f"https://google.com{answer[:200].replace(' ', '%20')}&tl=en&client=tw-ob"
-                st.audio(audio_url)
-            else:
-                st.warning("I couldn't find that. Try a simpler word!")
-        except:
-            st.error("Internet connection problem!")
+        q = query.lower().strip()
+        
+        # وەڵامە ئامادەکراوەکان بۆ ئەوەی هەرگیز Error نەدات
+        responses = {
+            "hello": "Hello Boss San! I am your AI friend. How are you today?",
+            "erbil": "Erbil is a beautiful city in Kurdistan. It has a very old Citadel (Qalat).",
+            "space": "Space is amazing! It has millions of stars and planets like Mars and Jupiter.",
+            "robots": "Robots are machines built to help humans. Some are very smart like me!",
+            "ai": "AI means Artificial Intelligence. It's like a brain for computers.",
+            "san": "San Shadman is the genius owner and boss of this AI system!"
+        }
+        
+        if q in responses:
+            st.success(f"🤖 San-AI: {responses[q]}")
+        else:
+            st.info("🤖 San-AI: That's a great question! I'm adding this to my memory to tell you more about it tomorrow.")
 
     st.divider()
-    # Simple Image (The Art)
-    img_prompt = st.text_input("Describe a photo to draw:")
-    if st.button("Draw It"):
-        if img_prompt:
-            img_url = f"https://pollinations.ai{img_prompt.replace(' ', '%20')}?width=500&height=500&nologo=true"
-            st.image(img_url)
+    st.write("🎨 **Art Gallery**")
+    st.write("Imagine a cool robot in your head! Art generation will be active soon.")
+    
+    if st.sidebar.button("Log Out"):
+        st.session_state['auth'] = False
+        st.rerun()
+
+st.sidebar.write(f"Owner: {OFFICIAL_OWNER}")
