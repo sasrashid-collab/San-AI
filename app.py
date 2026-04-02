@@ -10,7 +10,7 @@ USERS = {
 
 st.set_page_config(page_title="San-AI Ecosystem", page_icon="🤖", layout="centered")
 
-# --- 2. Hide Everything (Manage App & Streamlit Menu) ---
+# --- 2. Professional UI & Hide Streamlit Elements ---
 st.markdown("""
     <style>
     #MainMenu {visibility: hidden;}
@@ -25,7 +25,8 @@ st.markdown("""
 if 'user' not in st.session_state:
     st.session_state['user'] = None
 
-if not st.session_state['user']:
+# --- 4. Main App Flow ---
+if st.session_state['user'] is None:
     st.title("🛡️ San-AI Network Login")
     user_id = st.text_input("Username (ناو):").lower().strip()
     user_pwd = st.text_input("Password (پاسۆرد):", type="password")
@@ -37,9 +38,10 @@ if not st.session_state['user']:
         else:
             st.error("Invalid User or Password.")
 else:
-    # --- Main Interface ---
-    current_user = st.session_state['user'].capitalize()
-    st.title(f"🚀 Welcome, {current_user}")
+    # Get the active user name properly
+    active_user = st.session_state['user'].capitalize()
+    
+    st.title(f"🚀 Welcome, {active_user}")
     
     tab1, tab2 = st.tabs(["🧠 Smart Brain", "🎨 Art Studio"])
 
@@ -47,21 +49,32 @@ else:
         st.subheader("Search & Learn")
         query = st.text_input("Ask a question:", key="brain_input")
         if query:
-            st.info(f"Searching for {current_user}...")
-            # (Search Logic remains the same)
-            res = requests.get(f"https://duckduckgo.com{query}&format=json").json()
-            st.success(res.get("AbstractText", "I'm searching... try again!"))
+            st.info(f"Searching for {active_user}...")
+            try:
+                res = requests.get(f"https://duckduckgo.com{query}&format=json").json()
+                answer = res.get("AbstractText", "I'm searching... try again with a clearer topic!")
+                st.success(answer if answer else "I'm still learning about this!")
+            except:
+                st.error("Connection error.")
 
     with tab2:
         st.subheader("AI Art Studio")
-        img_prompt = st.text_input("Describe your art:", key="art_input")
+        img_prompt = st.text_input("Describe your art (English):", key="art_input")
         if st.button("Generate Image"):
-            img_url = f"https://pollinations.ai{img_prompt.replace(' ', '%20')}?nologo=true"
-            st.image(img_url, caption=f"Created for {current_user}")
+            if img_prompt:
+                img_url = f"https://pollinations.ai{img_prompt.replace(' ', '%20')}?nologo=true"
+                st.image(img_url, caption=f"Created for {active_user}")
+            else:
+                st.warning("Please describe what to draw.")
 
-    # Sidebar Logout
+    # Sidebar UI
+    st.sidebar.title("⚙️ System Control")
+    st.sidebar.write(f"Active User: **{active_user}**")
+    st.sidebar.write("Evolution: Phase 11.0")
+    
     if st.sidebar.button("Log Out"):
         st.session_state['user'] = None
         st.rerun()
 
-st.sidebar.write(f"Active User: {current_user}")
+st.sidebar.markdown("---")
+st.sidebar.write("© 2026 San-AI Ecosystem")
